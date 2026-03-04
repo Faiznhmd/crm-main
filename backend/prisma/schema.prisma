@@ -1,0 +1,74 @@
+  generator client {
+    provider = "prisma-client-js"
+  }
+
+  datasource db {
+    provider = "postgresql"
+  }
+
+  model User {
+    id        Int       @id @default(autoincrement())
+    name      String
+    email     String    @unique
+    password  String
+    role      Role
+    isActive  Boolean   @default(true) 
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    bookings  Booking[]
+  }
+
+  enum Role {
+    STUDENT
+    STAFF
+    ADMIN
+  }
+
+  model Resource {
+    id               Int     @id @default(autoincrement())
+    name             String
+    type             String // EQUIPMENT / LAB / ROOM
+    location         String?
+    description      String?
+    status           ResourceStatus  @default(AVAILABLE)
+    maxDuration      Int? // in hours
+    requiresApproval Boolean @default(false)
+
+    // Relation with bookings
+    bookings Booking[]
+
+    createdAt DateTime @default(now())
+  }
+
+  enum ResourceStatus {
+    AVAILABLE
+    BOOKED
+    MAINTENANCE
+    COMPLETED 
+  }
+
+
+  model Booking {
+    id         Int           @id @default(autoincrement())
+    resourceId Int
+    userId     Int
+    startTime  DateTime
+    endTime    DateTime
+    status     BookingStatus @default(PENDING)
+
+    resource Resource @relation(fields: [resourceId], references: [id])
+    user User @relation(fields: [userId], references: [id])
+
+    // Relation to User
+
+    createdAt DateTime @default(now())
+  }
+
+  enum BookingStatus {
+    PENDING
+    APPROVED
+    REJECTED
+    CANCELLED
+    COMPLETED     
+  }
+
