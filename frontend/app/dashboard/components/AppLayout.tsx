@@ -96,7 +96,7 @@ export default function DashboardLayout({
 
   const userMenu = [
     {
-      label: <Link href="/dashboard">Dashboard</Link>,
+      label: <Link href="/">Dashboard</Link>,
       key: '/dashboard',
       icon: <DashboardOutlined />,
     },
@@ -126,7 +126,7 @@ export default function DashboardLayout({
 
   const SidebarContent = (
     <>
-      <div className="logo">CRM</div>
+      <Link href="/">CRM</Link>,
       <Menu
         theme="dark"
         mode="inline"
@@ -203,7 +203,9 @@ export default function DashboardLayout({
               icon={<MenuOutlined />}
               onClick={() => setMobileOpen(true)}
             />
-            <span className="mobile-title">CRM</span>
+            <Link className="mobile-title cursor-pointer " href="/">
+              CRM
+            </Link>
           </div>
         )}
 

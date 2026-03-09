@@ -1,5 +1,6 @@
 // app/layout.tsx
 import './globals.css';
+import AppLayout from './dashboard/components/AppLayout';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -14,7 +15,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <AppLayout>{children}</AppLayout>
+      </body>
     </html>
   );
 }

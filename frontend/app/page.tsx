@@ -1,9 +1,21 @@
-import { Button } from 'antd';
+'use client';
 
-const Home = () => (
-  <div className="App">
-    <h1>lorem100000</h1>
-  </div>
-);
+import FAQ from './dashboard/components/FAQ';
+import Hero from './dashboard/components/Hero';
+import RecentBookings from './dashboard/components/RecentBookings';
+import Recommended from './dashboard/components/Recommended';
+import Stats from './dashboard/components/Stat';
+import Upcoming from './dashboard/components/Upcoming';
 
-export default Home;
+export default function Page() {
+  return (
+    <div>
+      <Hero />
+      <Stats />
+      <RecentBookings />
+      <Recommended />
+      <Upcoming />
+      <FAQ />
+    </div>
+  );
+}
