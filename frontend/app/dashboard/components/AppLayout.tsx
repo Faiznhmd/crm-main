@@ -212,7 +212,6 @@ export default function DashboardLayout({
         <Content className="content-area">{children}</Content>
       </Layout>
 
-      {/* Global Styles */}
       <style jsx global>{`
         .main-layout {
           min-height: 100vh;
