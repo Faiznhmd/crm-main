@@ -1,54 +1,3 @@
-// 'use client';
-
-// export default function PageWrapper({
-//   children,
-//   title,
-//   subtitle,
-// }: {
-//   children: React.ReactNode;
-//   title?: string;
-//   subtitle?: string;
-// }) {
-//   return (
-//     <div className="wrapper">
-//       {title && (
-//         <div className="header">
-//           <h1>{title}</h1>
-//           {subtitle && <p>{subtitle}</p>}
-//         </div>
-//       )}
-
-//       <div className="content">{children}</div>
-
-//       <style jsx>{`
-//         .wrapper {
-//           display: flex;
-//           flex-direction: column;
-//           gap: 28px;
-//         }
-
-//         .header h1 {
-//           font-size: 28px;
-//           font-weight: 700;
-//           color: white;
-//           margin: 0;
-//         }
-
-//         .header p {
-//           color: #9ca3af;
-//           margin-top: 6px;
-//           font-size: 15px;
-//         }
-
-//         .content {
-//           display: flex;
-//           flex-direction: column;
-//           gap: 24px;
-//         }
-//       `}</style>
-//     </div>
-//   );
-// }
 'use client';
 
 export default function PageWrapper({
@@ -76,6 +25,18 @@ export default function PageWrapper({
       <div className="content">{children}</div>
 
       <style jsx>{`
+        /* Remove white loader background */
+        :global(.dark-table .ant-table-placeholder) {
+          background: transparent !important;
+        }
+
+        :global(.dark-table .ant-empty-description) {
+          color: #9ca3af;
+        }
+
+        :global(.dark-table .ant-spin-container::after) {
+          background: transparent !important;
+        }
         .wrapper {
           display: flex;
           flex-direction: column;

@@ -115,9 +115,7 @@ const ResourcesPage = () => {
             return (
               <div key={r.id} className="resource-mobile-card">
                 <h3 className="m-title">{r.name}</h3>
-
                 <p className="m-text">{r.description}</p>
-
                 <p className="m-text">Qty: {r.quantity}</p>
 
                 <span
@@ -188,6 +186,23 @@ const ResourcesPage = () => {
 
         :global(.dark-table .ant-table-tbody > tr:hover > td) {
           background: rgba(255, 255, 255, 0.04) !important;
+        }
+
+        /* FIX WHITE LOADER */
+        :global(.dark-table .ant-table-placeholder) {
+          background: transparent !important;
+        }
+
+        :global(.dark-table .ant-spin-container::after) {
+          background: transparent !important;
+        }
+
+        :global(.dark-table .ant-empty-description) {
+          color: #9ca3af;
+        }
+
+        :global(.dark-table .ant-table-cell) {
+          background: transparent !important;
         }
 
         /* Mobile */

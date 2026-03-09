@@ -161,6 +161,18 @@ export default function RecentBookings() {
       )}
 
       <style jsx>{`
+        /* Remove white loader background */
+        :global(.dark-table .ant-table-placeholder) {
+          background: transparent !important;
+        }
+
+        :global(.dark-table .ant-empty-description) {
+          color: #9ca3af;
+        }
+
+        :global(.dark-table .ant-spin-container::after) {
+          background: transparent !important;
+        }
         .recent-card {
           padding: 28px;
           border-radius: 22px;

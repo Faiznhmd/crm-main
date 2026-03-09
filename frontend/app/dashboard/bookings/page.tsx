@@ -136,6 +136,22 @@ export default function UserBookingsPage() {
       />
 
       <style jsx>{`
+        /* FIX WHITE LOADER */
+        :global(.dark-table .ant-table-placeholder) {
+          background: transparent !important;
+        }
+
+        :global(.dark-table .ant-spin-container::after) {
+          background: transparent !important;
+        }
+
+        :global(.dark-table .ant-empty-description) {
+          color: #9ca3af;
+        }
+
+        :global(.dark-table .ant-table-cell) {
+          background: transparent !important;
+        }
         .bookings-wrapper {
           padding: 32px;
           border-radius: 24px;
