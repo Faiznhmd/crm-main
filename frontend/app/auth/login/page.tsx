@@ -24,7 +24,7 @@ export default function LoginPage() {
       localStorage.setItem('token', res.access_token);
 
       message.success('Login successful!');
-      router.push('/');
+      router.push('/dashboard');
     } catch (error) {
       console.error('LOGIN ERROR:', error);
       message.error('Invalid Credentials');

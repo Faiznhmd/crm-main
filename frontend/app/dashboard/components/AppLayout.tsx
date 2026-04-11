@@ -32,6 +32,23 @@ export default function DashboardLayout({
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [role, setRole] = useState<'ADMIN' | 'USER' | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await api.get<UserMeResponse>('/auth/me');
+
+        setRole(res.data.role); // ✅ set role
+        setIsAuthenticated(true); // ✅ user is logged in
+      } catch (error) {
+        setRole(null); // ❌ no user
+        setIsAuthenticated(false); // ❌ not logged in
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   /* Detect screen size */
   useEffect(() => {
@@ -122,11 +139,30 @@ export default function DashboardLayout({
     },
   ];
 
-  const currentMenu = role === 'ADMIN' ? adminMenu : userMenu;
+  const publicMenu = [
+    {
+      label: <Link href="/">Home</Link>,
+      key: '/',
+      icon: <DashboardOutlined />,
+    },
+    {
+      label: <Link href="/auth/login">Login</Link>,
+      key: '/auth/login',
+      icon: <UserOutlined />,
+    },
+  ];
+
+  const currentMenu = !isAuthenticated
+    ? publicMenu
+    : role === 'ADMIN'
+      ? adminMenu
+      : userMenu;
 
   const SidebarContent = (
     <>
-      <Link href="/">CRM</Link>,
+      <div className="logo">
+        <Link href="/">CRM</Link>
+      </div>
       <Menu
         theme="dark"
         mode="inline"
@@ -284,3 +320,201 @@ export default function DashboardLayout({
     </Layout>
   );
 }
+
+// 'use client';
+
+// import { useState, useEffect } from 'react';
+// import { Layout, Menu, Drawer, Button } from 'antd';
+// import {
+//   DashboardOutlined,
+//   AppstoreOutlined,
+//   BookOutlined,
+//   UserOutlined,
+//   LogoutOutlined,
+//   MenuOutlined,
+// } from '@ant-design/icons';
+// import Link from 'next/link';
+// import { usePathname, useRouter } from 'next/navigation';
+
+// const { Sider, Content } = Layout;
+
+// export default function AppLayout({ children }: { children: React.ReactNode }) {
+//   const pathname = usePathname();
+//   const router = useRouter();
+
+//   const [collapsed, setCollapsed] = useState(false);
+//   const [mobileOpen, setMobileOpen] = useState(false);
+//   const [isMobile, setIsMobile] = useState(false);
+
+//   // ✅ DERIVED AUTH (NO STATE, NO WARNING)
+//   const token =
+//     typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+
+//   const isAuthenticated = !!token;
+
+//   // ✅ MOBILE CHECK
+//   useEffect(() => {
+//     const checkScreen = () => setIsMobile(window.innerWidth < 992);
+//     checkScreen();
+//     window.addEventListener('resize', checkScreen);
+//     return () => window.removeEventListener('resize', checkScreen);
+//   }, []);
+
+//   // ❌ NOT LOGGED IN → NO SIDEBAR
+//   if (!isAuthenticated) {
+//     return <>{children}</>;
+//   }
+
+//   // ✅ MENU ITEMS
+//   const menuItems = [
+//     {
+//       label: <Link href="/dashboard">Dashboard</Link>,
+//       key: '/dashboard',
+//       icon: <DashboardOutlined />,
+//     },
+//     {
+//       label: <Link href="/dashboard/resources">Browse</Link>,
+//       key: '/dashboard/resources',
+//       icon: <AppstoreOutlined />,
+//     },
+//     {
+//       label: <Link href="/dashboard/bookings">My Bookings</Link>,
+//       key: '/dashboard/bookings',
+//       icon: <BookOutlined />,
+//     },
+//     {
+//       label: <Link href="/dashboard/profile">Profile</Link>,
+//       key: '/dashboard/profile',
+//       icon: <UserOutlined />,
+//     },
+//     {
+//       label: (
+//         <span
+//           onClick={() => {
+//             localStorage.removeItem('token');
+//             router.push('/');
+//           }}
+//           style={{ cursor: 'pointer' }}
+//         >
+//           Logout
+//         </span>
+//       ),
+//       key: '/logout',
+//       icon: <LogoutOutlined />,
+//     },
+//   ];
+
+//   const SidebarContent = (
+//     <>
+//       <div className="logo">
+//         <Link href="/">CRM</Link>
+//       </div>
+
+//       <Menu
+//         theme="dark"
+//         mode="inline"
+//         selectedKeys={[pathname]}
+//         items={menuItems}
+//         style={{ background: 'transparent', border: 'none' }}
+//       />
+//     </>
+//   );
+
+//   return (
+//     <Layout className="main-layout">
+//       {/* Desktop Sidebar */}
+//       {!isMobile && (
+//         <Sider
+//           collapsible
+//           collapsed={collapsed}
+//           onCollapse={(val) => setCollapsed(val)}
+//           width={240}
+//           collapsedWidth={80}
+//           className="sidebar"
+//         >
+//           {SidebarContent}
+//         </Sider>
+//       )}
+
+//       {/* Mobile Drawer */}
+//       {isMobile && (
+//         <Drawer
+//           placement="left"
+//           open={mobileOpen}
+//           onClose={() => setMobileOpen(false)}
+//           width={260}
+//         >
+//           {SidebarContent}
+//         </Drawer>
+//       )}
+
+//       {/* Content */}
+//       <Layout
+//         style={{
+//           marginLeft: !isMobile ? (collapsed ? 80 : 240) : 0,
+//           transition: 'all 0.2s ease',
+//         }}
+//       >
+//         {isMobile && (
+//           <div className="mobile-header">
+//             <Button
+//               type="text"
+//               icon={<MenuOutlined />}
+//               onClick={() => setMobileOpen(true)}
+//             />
+//             <Link href="/" className="mobile-title">
+//               CRM
+//             </Link>
+//           </div>
+//         )}
+
+//         <Content className="content-area">{children}</Content>
+//       </Layout>
+
+//       {/* GLOBAL STYLES */}
+//       <style jsx global>{`
+//         .main-layout {
+//           min-height: 100vh;
+//           background: linear-gradient(135deg, #0f172a, #111827);
+//         }
+
+//         .sidebar {
+//           background: linear-gradient(180deg, #0f172a, #1e293b);
+//         }
+
+//         .logo {
+//           height: 70px;
+//           display: flex;
+//           align-items: center;
+//           justify-content: center;
+//           color: white;
+//           font-weight: 700;
+//           font-size: 20px;
+//         }
+
+//         .content-area {
+//           margin: 24px;
+//           padding: 28px;
+//           border-radius: 16px;
+//           background: rgba(255, 255, 255, 0.05);
+//           color: white;
+//           min-height: calc(100vh - 48px);
+//         }
+
+//         .mobile-header {
+//           height: 60px;
+//           display: flex;
+//           align-items: center;
+//           padding: 0 16px;
+//           color: white;
+//         }
+
+//         .mobile-title {
+//           font-size: 18px;
+//           font-weight: 600;
+//           margin-left: 12px;
+//         }
+//       `}</style>
+//     </Layout>
+//   );
+// }
