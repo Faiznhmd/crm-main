@@ -161,7 +161,7 @@ export default function DashboardLayout({
   const SidebarContent = (
     <>
       <div className="logo">
-        <Link href="/">CRM</Link>
+        <Link href="">CRM</Link>
       </div>
       <Menu
         theme="dark"
